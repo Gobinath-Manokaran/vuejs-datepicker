@@ -15,14 +15,14 @@
         :name="name"
         :ref="refName"
         :id="id"
-        @click="showCalendar"
+        @focus="showCalendar"
+	@blur="onBlur"
         :value="formattedValue"
         :open-date="openDate"
         :placeholder="placeholder"
         :clear-button="clearButton"
         :disabled="disabledPicker"
-        :required="required"
-        readonly>
+        :required="required">
       <!-- Clear Button -->
       <span v-if="clearButton && selectedDate" class="vdp-datepicker__clear-button" :class="{'input-group-addon' : bootstrapStyling}" @click="clearDate()">
         <i :class="clearButtonIcon">
@@ -331,6 +331,11 @@ export default {
       if (!this.isInline) {
         if (full) this.$emit('closed')
         document.removeEventListener('click', this.clickOutside, false)
+      }
+    },
+    onBlur (e) {
+      if (e.relatedTarget) {
+        this.close()
       }
     },
     resetDefaultDate () {
